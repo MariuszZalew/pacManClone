@@ -1,0 +1,20 @@
+body {
+    height: 100%;
+}
+body {
+    background-image: url("./8bit Pacman.jpg");
+    background-color: #000;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+#pac-man {
+    display: none;
+} 
+#win {
+    display: none;
+}
+#element {
+    background: yellow;
+    color: black;
+    text-align: center;
+}
