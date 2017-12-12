@@ -2,7 +2,7 @@ body {
     height: 100%;
 }
 body {
-    background-image: url("./8bit Pacman.jpg");
+    background-image: url("../image/8bit Pacman.jpg");
     background-color: #000;
     background-size: cover;
     background-repeat: no-repeat;

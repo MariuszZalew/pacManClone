@@ -135,7 +135,7 @@
     canvas.width = 600;
 
     let imageObj = new Image();
-    imageObj.src = "./pac.png";
+    imageObj.src = "./image/pac.png";
 
     let keyclick = {};
 
