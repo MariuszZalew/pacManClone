@@ -156,6 +156,7 @@
         overlap(player);
 
         //player mouth movement
+        //old
         // if (player.pacSpecies == 320) { player.pacSpecies = 352; } else { player.pacSpecies = 320; }
         (player.pacSpecies == 320) ? player.pacSpecies = 352 : player.pacSpecies = 320;
     }
@@ -199,8 +200,8 @@
     //creating canvas enviroment
 
     let play = function () {
-        //winning screen
-        if (score >= 3) {
+        //winning screen!
+        if (level >= 5) {
             canvas.style.display = "none";
             return y.style.display = "block";
         }
@@ -305,20 +306,7 @@
             console.log("good job !!");
         }
 
-        //ghost is scared ;)
-        function blinkG(ghos, spec) {
-            if (ghos.species == 384 && ghos.Dir == 32 && !powerDot.ex && ghos.weak) {
-                ghos.Dir = 0;
-            } else if (ghos.species == 384 && ghos.Dir == 0 && !powerDot.ex) {
-                // setTimeout(() => {
-                ghos.Dir = 32;
-                // }, 100);
-            } else {
-                ghos.weak = false;
-                ghos.species = spec;
-            }
-        }
-
+        //enemy colision detection
 
         function colis(enem) {
             if (player.x <= (enem.x + 26) && enem.x <= (player.x + 26) && player.y <= (enem.y + 26) && enem.y <= (player.y + 26)) {
@@ -326,6 +314,12 @@
                 if (!powerDot.ex) {
                     score++;
                     level++
+                    //experimental bug fix
+                    phantom.weak = false;
+                    for (let i = 1; i <= level; i++) {
+                        enemies[`phantom${i}`].weak = false;
+                    }
+
                     console.log(level);
                 } else {
                     scorE++;
@@ -340,6 +334,21 @@
                 enem.weak = false;
             }
         }
+
+        //ghost is scared ;)
+        function blinkG(ghos, spec) {
+            if (ghos.species == 384 && ghos.Dir == 32 && !powerDot.ex && ghos.weak) {
+                ghos.Dir = 0;
+            } else if (ghos.species == 384 && ghos.Dir == 0 && !powerDot.ex) {
+                // setTimeout(() => {
+                ghos.Dir = 32;
+                // }, 100);
+            } else {
+                ghos.weak = false;
+                ghos.species = spec;
+            }
+        }
+
 
         context.font = "20px Verdana";
         context.fillStyle = "black";
