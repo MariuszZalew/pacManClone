@@ -1,4 +1,3 @@
-
 // var element = document.getElementById('element');
 
 // function ran(num) {
@@ -9,7 +8,8 @@
 //     element.innerText = ran(5);
 // }, 800);
 
-// (function () {
+'use strict';
+(function () {
     //variables
     let scorE = 0;
     let score = 0;
@@ -57,15 +57,39 @@
         this.blink = blink;
         this.weak = false;
     }
-    let enemies = {
-        phantom1: new Ghast(),
-        phantom2: new Ghast(),
-        phantom3: new Ghast(),
-        phantom4: new Ghast(),
-        phantom5: new Ghast(),
-    }
+
+    // let maxLev = prompt("ile chcesz zagrać leveli? ^^");
+    // for(let i = 0 ; i <= maxLev ;i++ ) {
+    //     function () {
+    //     }
+    // }
+    
+
+    // let enemies = {
+    //     phantom1: new Ghast(),
+    //     phantom2: new Ghast(),
+    //     phantom3: new Ghast(),
+    //     phantom4: new Ghast(),
+    //     phantom5: new Ghast(),
+    // }
+    let enemies = [];
+    for ( let i = 0, maxLev = 7; i <= maxLev; i++ ) {
+        enemies.push(new Ghast());
+    };
+
+    // let enemies = [
+    //     phantom1 = new Ghast(),
+    //     phantom2 = new Ghast(),
+    //     phantom3 = new Ghast(),
+    //     phantom4 = new Ghast(),
+    //     phantom5 = new Ghast()
+    // ]
+        
+    
     //old version of ghosts
-    const enemy = [
+    let enemy1 = {}, enemy2 = {}, enemy3 = {}, enemy4 = {}, enemy5 = {}, enemy6 = {};
+
+    let enemy = [
         enemy1 = {
             x: 150,
             y: 150,
@@ -139,6 +163,7 @@
     let keyclick = {};
 
     function overlap(targ) {
+
         if (targ.x >= canvas.width) { targ.x = 0 }
         if (targ.y >= canvas.height) { targ.y = 0 }
         if (targ.x < 0) { targ.x = canvas.width }
@@ -164,8 +189,7 @@
     }
 
     //blinking eyes
-
-    function blinking() { if (phantom.weak == false) { setTimeout(() => { return phantom.Dir = 32 * ran(4); }, 400); } }
+    // function blinking() { if (phantom.weak == false) { setTimeout(() => { return phantom.Dir = 32 * ran(4); }, 400); } }
 
     //event listeners
 
@@ -200,7 +224,7 @@
 
     let play = function () {
         //winning screen!
-        if (level >= 5) {
+        if (level >= 6) {
             canvas.style.display = "none";
             return y.style.display = "block";
         }
@@ -227,18 +251,18 @@
         //experimental ghost
         for (let i = 1; i <= level; i++) {
 
-            context.drawImage(imageObj, enemies[`phantom${i}`].species, enemies[`phantom${i}`].Dir, 32, 32, enemies[`phantom${i}`].x, enemies[`phantom${i}`].y, 32, 32);
-
-            eyeM(enemies[`phantom${i}`]);
-
-            colis(enemies[`phantom${i}`]);
-
-            moveD(enemies[`phantom${i}`].locX, enemies[`phantom${i}`].locY, enemies[`phantom${i}`]);
-
-            overlap(enemies[`phantom${i}`]);
-
-            blinkG(enemies[`phantom${i}`], 32 * i);
-
+            // context.drawImage(imageObj, enemies[`phantom${i}`].species, enemies[`phantom${i}`].Dir, 32, 32, enemies[`phantom${i}`].x, enemies[`phantom${i}`].y, 32, 32);
+            context.drawImage(imageObj, enemies[i-1].species, enemies[i-1].Dir, 32, 32, enemies[i-1].x, enemies[i-1].y, 32, 32);
+            // eyeM(enemies[`phantom${i}`]);
+            eyeM(enemies[i-1]);
+            // colis(enemies[`phantom${i}`]);
+            colis(enemies[i-1]);
+            // moveD(enemies[`phantom${i}`].locX, enemies[`phantom${i}`].locY, enemies[`phantom${i}`]);
+            moveD(enemies[i-1].locX, enemies[i-1].locY, enemies[i-1]);
+            // overlap(enemies[`phantom${i}`]);
+            overlap(enemies[i-1]);
+            // blinkG(enemies[`phantom${i}`], 32 * i);
+            blinkG(enemies[i-1], 32 * i);
         };
         //eyes movement on enemy
         function eyeM(enem) {
@@ -252,15 +276,12 @@
         }
 
         //changes enemy movement direction
+
         function moveD(dirx, diry, enem) {
             if (dirx % 2) {
-                if (diry % 2) {
-                    enem.x += enem.speed;
-                } else { enem.x -= enem.speed; }
+                diry % 2 ? enem.x += enem.speed : enem.x -= enem.speed;
             } else {
-                if (diry % 2) {
-                    enem.y += enem.speed;
-                } else { enem.y -= enem.speed; }
+                diry % 2 ? enem.y += enem.speed : enem.y -= enem.speed;
             }
         }
 
@@ -283,15 +304,14 @@
             player.speed += 4;
             //work in progress
             for (let i = 1; i <= level; i++) {
-                console.log(enemies[`phantom${i}`].weak);
-                enemies[`phantom${i}`].weak = true;
-                console.log(enemies[`phantom${i}`].weak);
+                // enemies[`phantom${i}`].weak = true;
+                enemies[i-1].weak = true;
             }
 
             if (!powerDot.ex) {
                 for (let i = 1; i <= level; i++) {
-                    enemies[`phantom${i}`].species = enemy6.species;
-                    enemies[`phantom${i}`].Dir = 32;
+                    enemies[i-1].species = enemy6.species;
+                    enemies[i-1].Dir = 32;
                 }
                 phantom.species = enemy6.species;
                 phantom.Dir = 32;
@@ -301,11 +321,9 @@
                 phantom.weak = false;
                 player.speed = 8;
                 for (let i = 1; i <= level; i++) {
-                    enemies[`phantom${i}`].weak = false;
+                    enemies[i-1].weak = false;
                 }
             }, 6500);
-
-            console.log("good job !!");
         }
 
         //enemy colision detection
@@ -320,7 +338,7 @@
                     //experimental bug fix
                     phantom.weak = false;
                     for (let i = 1; i <= level; i++) {
-                        enemies[`phantom${i}`].weak = false;
+                        enemies[i-1].weak = false;
                     }
 
                     console.log(level);
@@ -353,7 +371,6 @@
             }
         }
 
-
         context.font = "20px Verdana";
         context.fillStyle = "black";
 
@@ -372,7 +389,7 @@
         mial.style.display = "none";
     });
 
-// })();
+})();
 
 // document.addEventListener('keydown',function(e){
 //     console.log(e);
@@ -381,9 +398,6 @@
 //     console.log(e);
 // });
 
-//redefine powerUp colision logic!+
-
-//refine movement in the game
 //add aditonal ghost state
 //style the site
 // refine photoshop skills to edit graphics --
