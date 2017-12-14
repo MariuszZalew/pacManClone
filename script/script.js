@@ -8,9 +8,8 @@
 // setInterval(function () {
 //     element.innerText = ran(5);
 // }, 800);
-(function () {
 
-
+// (function () {
     //variables
     let scorE = 0;
     let score = 0;
@@ -147,18 +146,16 @@
     }
 
     //usable functions
-    function move(keyclick) {
-        if (37 in keyclick) { player.x -= player.speed; player.pacDir = 64; }
-        if (38 in keyclick) { player.y -= player.speed; player.pacDir = 96; }
-        if (39 in keyclick) { player.x += player.speed; player.pacDir = 0; }
-        if (40 in keyclick) { player.y += player.speed; player.pacDir = 32; }
+    function move() {
+        if ( keyclick["37"] == true) { player.x -= player.speed; player.pacDir = 64;}
+        else if  (keyclick["38"] == true) { player.y -= player.speed; player.pacDir = 96;}
+        else if ( keyclick["39"] == true) { player.x += player.speed; player.pacDir = 0;}
+        else if ( keyclick["40"] == true) { player.y += player.speed; player.pacDir = 32;}
 
         overlap(player);
 
         //player mouth movement
-        //old
-        // if (player.pacSpecies == 320) { player.pacSpecies = 352; } else { player.pacSpecies = 320; }
-        (player.pacSpecies == 320) ? player.pacSpecies = 352 : player.pacSpecies = 320;
+        (player.pacSpecies == 320) ? setTimeout( () => {player.pacSpecies = 352;} ,350) : player.pacSpecies = 320;
     }
 
     //generates ranodom number
@@ -173,15 +170,17 @@
     //event listeners
 
     document.addEventListener("keydown", function (e) {
+        for (let key in keyclick) {
+                delete keyclick[key];
+        }
         keyclick[e.keyCode] = true;
-        move(keyclick);
-        // console.log(keyclick);
+
+        console.log(keyclick);
     }, false);
 
-    document.addEventListener("keyup", function (e) {
-        delete keyclick[e.keyCode];
-    }, false);
-
+    // document.addEventListener("keyup", function (e) {
+    //     keyclick[e.keyCode] = false;
+    // }, false);
 
     if (!powerDot.ex) {
         powerDot.x = ran(560) + 25;
@@ -211,6 +210,8 @@
 
         //pac-man
         context.drawImage(imageObj, player.pacSpecies, player.pacDir, 32, 32, player.x, player.y, player.pacSize, player.pacSize);
+
+        move();
         //first ghost
         context.drawImage(imageObj, phantom.species, phantom.Dir, 32, 32, phantom.x, phantom.y, 32, 32);
 
@@ -239,7 +240,7 @@
             blinkG(enemies[`phantom${i}`], 32 * i);
 
         };
-
+        //eyes movement on enemy
         function eyeM(enem) {
             if (enem.blink > 0) {
                 enem.blink--
@@ -279,7 +280,7 @@
             (player.y <= powerDot.y && player.y >= powerDot.y - 35) && powerDot.ex) {
             powerDot.ex = false;
             phantom.weak = true;
-
+            player.speed += 4;
             //work in progress
             for (let i = 1; i <= level; i++) {
                 console.log(enemies[`phantom${i}`].weak);
@@ -298,6 +299,7 @@
             setTimeout(() => {
                 powerDot.ex = true;
                 phantom.weak = false;
+                player.speed = 8;
                 for (let i = 1; i <= level; i++) {
                     enemies[`phantom${i}`].weak = false;
                 }
@@ -311,9 +313,10 @@
         function colis(enem) {
             if (player.x <= (enem.x + 26) && enem.x <= (player.x + 26) && player.y <= (enem.y + 26) && enem.y <= (player.y + 26)) {
                 console.log('ghost');
-                if (!powerDot.ex) {
+                if (!powerDot.ex && phantom.weak == true) {
                     score++;
                     level++
+                    player.speed = 8;
                     //experimental bug fix
                     phantom.weak = false;
                     for (let i = 1; i <= level; i++) {
@@ -323,6 +326,7 @@
                     console.log(level);
                 } else {
                     scorE++;
+                    player.speed = 8;
                     if (level > 0) {
                         level--;
                     }
@@ -335,7 +339,7 @@
             }
         }
 
-        //ghost is scared ;)
+        //ghost is scared and blinks
         function blinkG(ghos, spec) {
             if (ghos.species == 384 && ghos.Dir == 32 && !powerDot.ex && ghos.weak) {
                 ghos.Dir = 0;
@@ -368,7 +372,7 @@
         mial.style.display = "none";
     });
 
-})();
+// })();
 
 // document.addEventListener('keydown',function(e){
 //     console.log(e);
@@ -377,9 +381,7 @@
 //     console.log(e);
 // });
 
-//redefine powerUp colision logic!
-
-//add movement
+//redefine powerUp colision logic!+
 
 //refine movement in the game
 //add aditonal ghost state
