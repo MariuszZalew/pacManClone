@@ -36,7 +36,7 @@
 
     //enemy generating function
 
-    function Ghast(x = ran(500) + 50, y = ran(500) + 50, species = ran(5) * 64, Dir = 0, speed = 10, blink = ran(15) + 5) {
+    function Ghast(x = ran(400) + 150, y = ran(400) + 150, species = ran(5) * 64, Dir = 0, speed = 10, blink = ran(15) + 5) {
         this.x = x;
         this.y = y;
         this.species = species;
@@ -76,16 +76,7 @@
     for ( let i = 0, maxLev = 7; i <= maxLev; i++ ) {
         enemies.push(new Ghast());
     };
-
-    // let enemies = [
-    //     phantom1 = new Ghast(),
-    //     phantom2 = new Ghast(),
-    //     phantom3 = new Ghast(),
-    //     phantom4 = new Ghast(),
-    //     phantom5 = new Ghast()
-    // ]
         
-    
     //old version of ghosts
     let enemy1 = {}, enemy2 = {}, enemy3 = {}, enemy4 = {}, enemy5 = {}, enemy6 = {};
 
@@ -110,7 +101,7 @@
         },
         enemy3 =
         {
-            x: 100,
+            x: 300,
             y: 150,
             species: 128,
             Dir: 0,
@@ -121,7 +112,7 @@
         enemy4 =
         {
             x: 250,
-            y: 100,
+            y: 180,
             species: 192,
             Dir: 0,
             speed: 10,
@@ -131,7 +122,7 @@
         enemy5 =
         {
             x: 350,
-            y: 50,
+            y: 400,
             species: 254,
             Dir: 0,
             speed: 10,
@@ -392,9 +383,6 @@
 })();
 
 // document.addEventListener('keydown',function(e){
-//     console.log(e);
-// });
-// document.addEventListener('keypress',function(e){
 //     console.log(e);
 // });
 
