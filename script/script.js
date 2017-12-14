@@ -1,4 +1,3 @@
-
 // var element = document.getElementById('element');
 
 // function ran(num) {
@@ -8,9 +7,9 @@
 // setInterval(function () {
 //     element.innerText = ran(5);
 // }, 800);
+
+'use strict';
 (function () {
-
-
     //variables
     let scorE = 0;
     let score = 0;
@@ -37,7 +36,7 @@
 
     //enemy generating function
 
-    function Ghast(x = ran(500) + 50, y = ran(500) + 50, species = ran(5) * 64, Dir = 0, speed = 10, blink = ran(15) + 5) {
+    function Ghast(x = ran(400) + 150, y = ran(400) + 150, species = ran(5) * 64, Dir = 0, speed = 10, blink = ran(15) + 5) {
         this.x = x;
         this.y = y;
         this.species = species;
@@ -58,15 +57,30 @@
         this.blink = blink;
         this.weak = false;
     }
-    let enemies = {
-        phantom1: new Ghast(),
-        phantom2: new Ghast(),
-        phantom3: new Ghast(),
-        phantom4: new Ghast(),
-        phantom5: new Ghast(),
-    }
+
+    // let maxLev = prompt("ile chcesz zagrać leveli? ^^");
+    // for(let i = 0 ; i <= maxLev ;i++ ) {
+    //     function () {
+    //     }
+    // }
+    
+
+    // let enemies = {
+    //     phantom1: new Ghast(),
+    //     phantom2: new Ghast(),
+    //     phantom3: new Ghast(),
+    //     phantom4: new Ghast(),
+    //     phantom5: new Ghast(),
+    // }
+    let enemies = [];
+    for ( let i = 0, maxLev = 7; i <= maxLev; i++ ) {
+        enemies.push(new Ghast());
+    };
+        
     //old version of ghosts
-    const enemy = [
+    let enemy1 = {}, enemy2 = {}, enemy3 = {}, enemy4 = {}, enemy5 = {}, enemy6 = {};
+
+    let enemy = [
         enemy1 = {
             x: 150,
             y: 150,
@@ -87,7 +101,7 @@
         },
         enemy3 =
         {
-            x: 100,
+            x: 300,
             y: 150,
             species: 128,
             Dir: 0,
@@ -98,7 +112,7 @@
         enemy4 =
         {
             x: 250,
-            y: 100,
+            y: 180,
             species: 192,
             Dir: 0,
             speed: 10,
@@ -108,7 +122,7 @@
         enemy5 =
         {
             x: 350,
-            y: 50,
+            y: 400,
             species: 254,
             Dir: 0,
             speed: 10,
@@ -140,6 +154,7 @@
     let keyclick = {};
 
     function overlap(targ) {
+
         if (targ.x >= canvas.width) { targ.x = 0 }
         if (targ.y >= canvas.height) { targ.y = 0 }
         if (targ.x < 0) { targ.x = canvas.width }
@@ -147,18 +162,16 @@
     }
 
     //usable functions
-    function move(keyclick) {
-        if (37 in keyclick) { player.x -= player.speed; player.pacDir = 64; }
-        if (38 in keyclick) { player.y -= player.speed; player.pacDir = 96; }
-        if (39 in keyclick) { player.x += player.speed; player.pacDir = 0; }
-        if (40 in keyclick) { player.y += player.speed; player.pacDir = 32; }
+    function move() {
+        if ( keyclick["37"] == true) { player.x -= player.speed; player.pacDir = 64;}
+        else if  (keyclick["38"] == true) { player.y -= player.speed; player.pacDir = 96;}
+        else if ( keyclick["39"] == true) { player.x += player.speed; player.pacDir = 0;}
+        else if ( keyclick["40"] == true) { player.y += player.speed; player.pacDir = 32;}
 
         overlap(player);
 
         //player mouth movement
-        //old
-        // if (player.pacSpecies == 320) { player.pacSpecies = 352; } else { player.pacSpecies = 320; }
-        (player.pacSpecies == 320) ? player.pacSpecies = 352 : player.pacSpecies = 320;
+        (player.pacSpecies == 320) ? setTimeout( () => {player.pacSpecies = 352;} ,350) : player.pacSpecies = 320;
     }
 
     //generates ranodom number
@@ -167,21 +180,22 @@
     }
 
     //blinking eyes
-
-    function blinking() { if (phantom.weak == false) { setTimeout(() => { return phantom.Dir = 32 * ran(4); }, 400); } }
+    // function blinking() { if (phantom.weak == false) { setTimeout(() => { return phantom.Dir = 32 * ran(4); }, 400); } }
 
     //event listeners
 
     document.addEventListener("keydown", function (e) {
+        for (let key in keyclick) {
+                delete keyclick[key];
+        }
         keyclick[e.keyCode] = true;
-        move(keyclick);
-        // console.log(keyclick);
+
+        console.log(keyclick);
     }, false);
 
-    document.addEventListener("keyup", function (e) {
-        delete keyclick[e.keyCode];
-    }, false);
-
+    // document.addEventListener("keyup", function (e) {
+    //     keyclick[e.keyCode] = false;
+    // }, false);
 
     if (!powerDot.ex) {
         powerDot.x = ran(560) + 25;
@@ -201,7 +215,7 @@
 
     let play = function () {
         //winning screen!
-        if (level >= 5) {
+        if (level >= 6) {
             canvas.style.display = "none";
             return y.style.display = "block";
         }
@@ -211,6 +225,8 @@
 
         //pac-man
         context.drawImage(imageObj, player.pacSpecies, player.pacDir, 32, 32, player.x, player.y, player.pacSize, player.pacSize);
+
+        move();
         //first ghost
         context.drawImage(imageObj, phantom.species, phantom.Dir, 32, 32, phantom.x, phantom.y, 32, 32);
 
@@ -226,20 +242,20 @@
         //experimental ghost
         for (let i = 1; i <= level; i++) {
 
-            context.drawImage(imageObj, enemies[`phantom${i}`].species, enemies[`phantom${i}`].Dir, 32, 32, enemies[`phantom${i}`].x, enemies[`phantom${i}`].y, 32, 32);
-
-            eyeM(enemies[`phantom${i}`]);
-
-            colis(enemies[`phantom${i}`]);
-
-            moveD(enemies[`phantom${i}`].locX, enemies[`phantom${i}`].locY, enemies[`phantom${i}`]);
-
-            overlap(enemies[`phantom${i}`]);
-
-            blinkG(enemies[`phantom${i}`], 32 * i);
-
+            // context.drawImage(imageObj, enemies[`phantom${i}`].species, enemies[`phantom${i}`].Dir, 32, 32, enemies[`phantom${i}`].x, enemies[`phantom${i}`].y, 32, 32);
+            context.drawImage(imageObj, enemies[i-1].species, enemies[i-1].Dir, 32, 32, enemies[i-1].x, enemies[i-1].y, 32, 32);
+            // eyeM(enemies[`phantom${i}`]);
+            eyeM(enemies[i-1]);
+            // colis(enemies[`phantom${i}`]);
+            colis(enemies[i-1]);
+            // moveD(enemies[`phantom${i}`].locX, enemies[`phantom${i}`].locY, enemies[`phantom${i}`]);
+            moveD(enemies[i-1].locX, enemies[i-1].locY, enemies[i-1]);
+            // overlap(enemies[`phantom${i}`]);
+            overlap(enemies[i-1]);
+            // blinkG(enemies[`phantom${i}`], 32 * i);
+            blinkG(enemies[i-1], 32 * i);
         };
-
+        //eyes movement on enemy
         function eyeM(enem) {
             if (enem.blink > 0) {
                 enem.blink--
@@ -251,15 +267,12 @@
         }
 
         //changes enemy movement direction
+
         function moveD(dirx, diry, enem) {
             if (dirx % 2) {
-                if (diry % 2) {
-                    enem.x += enem.speed;
-                } else { enem.x -= enem.speed; }
+                diry % 2 ? enem.x += enem.speed : enem.x -= enem.speed;
             } else {
-                if (diry % 2) {
-                    enem.y += enem.speed;
-                } else { enem.y -= enem.speed; }
+                diry % 2 ? enem.y += enem.speed : enem.y -= enem.speed;
             }
         }
 
@@ -279,18 +292,17 @@
             (player.y <= powerDot.y && player.y >= powerDot.y - 35) && powerDot.ex) {
             powerDot.ex = false;
             phantom.weak = true;
-
+            player.speed += 4;
             //work in progress
             for (let i = 1; i <= level; i++) {
-                console.log(enemies[`phantom${i}`].weak);
-                enemies[`phantom${i}`].weak = true;
-                console.log(enemies[`phantom${i}`].weak);
+                // enemies[`phantom${i}`].weak = true;
+                enemies[i-1].weak = true;
             }
 
             if (!powerDot.ex) {
                 for (let i = 1; i <= level; i++) {
-                    enemies[`phantom${i}`].species = enemy6.species;
-                    enemies[`phantom${i}`].Dir = 32;
+                    enemies[i-1].species = enemy6.species;
+                    enemies[i-1].Dir = 32;
                 }
                 phantom.species = enemy6.species;
                 phantom.Dir = 32;
@@ -298,12 +310,11 @@
             setTimeout(() => {
                 powerDot.ex = true;
                 phantom.weak = false;
+                player.speed = 8;
                 for (let i = 1; i <= level; i++) {
-                    enemies[`phantom${i}`].weak = false;
+                    enemies[i-1].weak = false;
                 }
             }, 6500);
-
-            console.log("good job !!");
         }
 
         //enemy colision detection
@@ -311,18 +322,20 @@
         function colis(enem) {
             if (player.x <= (enem.x + 26) && enem.x <= (player.x + 26) && player.y <= (enem.y + 26) && enem.y <= (player.y + 26)) {
                 console.log('ghost');
-                if (!powerDot.ex) {
+                if (!powerDot.ex && phantom.weak == true) {
                     score++;
                     level++
+                    player.speed = 8;
                     //experimental bug fix
                     phantom.weak = false;
                     for (let i = 1; i <= level; i++) {
-                        enemies[`phantom${i}`].weak = false;
+                        enemies[i-1].weak = false;
                     }
 
                     console.log(level);
                 } else {
                     scorE++;
+                    player.speed = 8;
                     if (level > 0) {
                         level--;
                     }
@@ -335,7 +348,7 @@
             }
         }
 
-        //ghost is scared ;)
+        //ghost is scared and blinks
         function blinkG(ghos, spec) {
             if (ghos.species == 384 && ghos.Dir == 32 && !powerDot.ex && ghos.weak) {
                 ghos.Dir = 0;
@@ -348,7 +361,6 @@
                 ghos.species = spec;
             }
         }
-
 
         context.font = "20px Verdana";
         context.fillStyle = "black";
@@ -373,15 +385,7 @@
 // document.addEventListener('keydown',function(e){
 //     console.log(e);
 // });
-// document.addEventListener('keypress',function(e){
-//     console.log(e);
-// });
 
-//redefine powerUp colision logic!
-
-//add movement
-
-//refine movement in the game
 //add aditonal ghost state
 //style the site
 // refine photoshop skills to edit graphics --
