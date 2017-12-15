@@ -64,7 +64,6 @@
     //     }
     // }
     
-
     // let enemies = {
     //     phantom1: new Ghast(),
     //     phantom2: new Ghast(),
@@ -80,8 +79,7 @@
     //old version of ghosts
     let enemy1 = {}, enemy2 = {}, enemy3 = {}, enemy4 = {}, enemy5 = {}, enemy6 = {};
 
-    let enemy = [
-        enemy1 = {
+    let enemy = [  enemy1 = {
             x: 150,
             y: 150,
             species: 0,
@@ -287,7 +285,6 @@
 
         //powerup colision detection v2.0
 
-        // true shit
         if (player.x <= powerDot.x && player.x >= powerDot.x - 35 &&
             (player.y <= powerDot.y && player.y >= powerDot.y - 35) && powerDot.ex) {
             powerDot.ex = false;
@@ -386,15 +383,4 @@
 //     console.log(e);
 // });
 
-//add aditonal ghost state
-//style the site
-// refine photoshop skills to edit graphics --
 
-//Git
-//node.js <- WEBPACK! <- babel <- ES6 <- modules ~ ewentualnie rozpisz ładnie ;P
-
-//callback ~ promise usage
-
-//Javascript -> ES6 -> Angular
-
-//HTML/CSS <- flex <- build your portfolio site
