@@ -216,6 +216,7 @@
         if (level >= 6) {
             canvas.style.display = "none";
             return y.style.display = "block";
+            // fadeIn(elem, 150);
         }
 
         context.fillStyle = "gray";
@@ -378,6 +379,24 @@
     });
 
 })();
+
+// elem == #win 
+//experimental code
+// function fadeIn(elem, speed) {
+    
+//     let inInterval = setInterval( () => {
+        
+//     elem.style.opacity = Number(elem.style.opacity) + 0.02;
+    
+//         if (elem.style.opacity >= 1) {
+            
+//             // elem.style.opacity = 1;
+//             clearInterval(inInterval);
+//         }    
+
+//     }, speed); // 10ms == .01s 
+// }
+
 
 // document.addEventListener('keydown',function(e){
 //     console.log(e);
