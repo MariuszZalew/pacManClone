@@ -10,9 +10,7 @@ body {
 #pac-man {
     display: none;
 } 
-#win {
-    display: none;
-}
+
 #element {
     background: yellow;
     color: black;
@@ -81,6 +79,27 @@ button:active {
     -webkit-animation: fadein 2s; /* Safari and Chrome */
     -o-animation: fadein 2s; /* Opera */
 }
+
+.kut {
+	display: none;
+	width: 100%;
+}
+
+.winScrean {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	flex-grow: 1;
+}
+
+p {
+	font-size: 40px;
+	text-align: center;
+	width: 200px;
+	font-family: 'Indie Flower', cursive;
+}
+
 @keyframes fadein {
     from {
         opacity:0;
