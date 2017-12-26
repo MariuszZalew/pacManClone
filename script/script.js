@@ -11,12 +11,12 @@
 'use strict';
 (function () {
     //variables
-    let scorE = 0;
-    let score = 0;
-    let level = 1;
+    let scorE = 0,
+        score = 0,
+        level = 1;
 
-    let y = document.getElementById("win");
-    let x = document.getElementById("pac-man");
+    let y = document.getElementById("win"),
+        x = document.getElementById("pac-man");
 
     let player = {
         x: 50,
@@ -77,7 +77,12 @@
     };
         
     //old version of ghosts
-    let enemy1 = {}, enemy2 = {}, enemy3 = {}, enemy4 = {}, enemy5 = {}, enemy6 = {};
+    let enemy1 = {}, 
+        enemy2 = {}, 
+        enemy3 = {}, 
+        enemy4 = {}, 
+        enemy5 = {}, 
+        enemy6 = {};
 
     let enemy = [  enemy1 = {
             x: 150,
@@ -177,9 +182,6 @@
         return Math.floor(Math.random() * num);
     }
 
-    //blinking eyes
-    // function blinking() { if (phantom.weak == false) { setTimeout(() => { return phantom.Dir = 32 * ran(4); }, 400); } }
-
     //event listeners
 
     document.addEventListener("keydown", function (e) {
@@ -209,14 +211,16 @@
         dirEW = ran(5);
     }, 900);
 
-    //creating canvas enviroment
-
+    //creating canvas enviroment !important
+    let lastLev = 6;
     let play = function () {
+
         //winning screen!
-        if (level >= 6) {
+
+        if (level >= lastLev) {
             canvas.style.display = "none";
-            return y.style.display = "block";
-            // fadeIn(elem, 150);
+            
+            y.style.display = "block";
         }
 
         context.fillStyle = "gray";
@@ -372,31 +376,42 @@
     }
 
     //this is how you can start the game
-    let mial = document.querySelector('button');
+
+    let buttons = document.querySelectorAll('.button1'),
+        allButton = document.querySelector('.buttons');
+    //dificulity buttons
+    buttons[0].addEventListener('click',function(){
+        lastLev = 2;
+        play();
+        allButton.style.display = "none";
+    });
+
+    buttons[1].addEventListener('click',function(){
+        lastLev = 4;
+        play();
+        allButton.style.display = "none";
+    });
+
+    buttons[2].addEventListener('click',function(){
+        lastLev = 6;
+        play();
+        allButton.style.display = "none";
+    });
+
+    let grau = document.querySelector('#win');//y
+
+    let mial = document.querySelector('.but > button');
+
     mial.addEventListener('click', play, false);
     mial.addEventListener('click', function () {
         mial.style.display = "none";
     });
-
+    //first button not displayed
+    mial.style.display = "none";
 })();
 
 // elem == #win 
 //experimental code
-// function fadeIn(elem, speed) {
-    
-//     let inInterval = setInterval( () => {
-        
-//     elem.style.opacity = Number(elem.style.opacity) + 0.02;
-    
-//         if (elem.style.opacity >= 1) {
-            
-//             // elem.style.opacity = 1;
-//             clearInterval(inInterval);
-//         }    
-
-//     }, speed); // 10ms == .01s 
-// }
-
 
 // document.addEventListener('keydown',function(e){
 //     console.log(e);
