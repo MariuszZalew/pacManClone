@@ -15,7 +15,7 @@
         score = 0,
         level = 1;
 
-    let y = document.getElementById("win"),
+    let grau = document.querySelector('.kut'),
         x = document.getElementById("pac-man");
 
     let player = {
@@ -220,7 +220,7 @@
         if (level >= lastLev) {
             canvas.style.display = "none";
             
-            y.style.display = "block";
+            grau.style.display = "flex";
         }
 
         context.fillStyle = "gray";
@@ -397,8 +397,6 @@
         play();
         allButton.style.display = "none";
     });
-
-    let grau = document.querySelector('#win');//y
 
     let mial = document.querySelector('.but > button');
 
